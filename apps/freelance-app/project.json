@@ -1,0 +1,24 @@
+{
+  "name": "freelance-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/freelance-app/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "freelance-app:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "freelance-app:build:development"
+        },
+        "production": {
+          "buildTarget": "freelance-app:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
