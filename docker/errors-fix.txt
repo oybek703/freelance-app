@@ -1,0 +1,5 @@
+1. Elastic Search
+Error:
+    high disk watermark [90%] exceeded on
+Link:
+    https://stackoverflow.com/questions/30289024/high-disk-watermark-exceeded-even-when-there-is-not-much-data-in-my-index
