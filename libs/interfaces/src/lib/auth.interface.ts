@@ -1,3 +1,3 @@
-export interface ICurrentUser {
-
+export interface IUser {
+  name: string
 }
