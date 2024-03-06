@@ -26,7 +26,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=mysql_db
-      - MYSQL_USER=jobberapp_mysql_user
+      - MYSQL_USER=freelance_app_mysql_user
       - MYSQL_PASSWORD=1234567
     ports:
       - '3306:3306'
@@ -38,8 +38,8 @@ services:
     restart: always
     environment:
       - POSTGRES_PASSWORD=123456
-      - POSTGRES_USER=jobberapp_pg_user
-      - POSTGRES_DB=jobberapp_pg_db
+      - POSTGRES_USER=freelance_app_pg_user
+      - POSTGRES_DB=freelance_app_pg_db
     ports:
       - '5432:5432'
     volumes:
