@@ -1,17 +1,39 @@
-import { IRMQServiceOptions } from 'nestjs-rmq/dist/interfaces/rmq-options.interface'
 import { ConfigService } from '@nestjs/config'
 import { EnvVariableKeys } from '../app.constants'
-import { MicroserviceNames } from '@freelance-app/helpers'
+import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq'
+import { AuthEmail, OrderEmail } from '@freelance-app/contracts'
 
-export const getRmqConfig = (configService: ConfigService): IRMQServiceOptions => {
-  const rabbitmqExchange = configService.get(EnvVariableKeys.rabbitmqExchange)
-  const rabbitmqHost = configService.get(EnvVariableKeys.rabbitmqHost)
-  const rabbitmqPort = configService.get(EnvVariableKeys.rabbitmqPort)
-  const rabbitmqUser = configService.get(EnvVariableKeys.rabbitmqUser)
-  const rabbitmqPassword = configService.get(EnvVariableKeys.rabbitmqPassword)
+export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
+  const rabbitmqEndpoint = configService.get(EnvVariableKeys.rabbitmqEndpoint)
   return {
-    exchangeName: rabbitmqExchange,
-    connections: [{ host: rabbitmqHost, port: rabbitmqPort, login: rabbitmqUser, password: rabbitmqPassword }],
-    serviceName: MicroserviceNames.notification
+    uri: rabbitmqEndpoint,
+    exchanges: [
+      {
+        name: AuthEmail.exchange,
+        options: { durable: true, autoDelete: false },
+        type: 'direct',
+        createExchangeIfNotExists: true
+      },
+      {
+        name: OrderEmail.exchange,
+        options: { durable: true, autoDelete: false },
+        type: 'direct',
+        createExchangeIfNotExists: true
+      }
+    ],
+    queues: [
+      {
+        name: AuthEmail.queue,
+        routingKey: AuthEmail.routingKey,
+        createQueueIfNotExists: true,
+        exchange: AuthEmail.exchange
+      },
+      {
+        name: OrderEmail.queue,
+        routingKey: OrderEmail.routingKey,
+        createQueueIfNotExists: true,
+        exchange: OrderEmail.exchange
+      }
+    ]
   }
 }

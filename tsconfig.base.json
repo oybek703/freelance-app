@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@freelance-app/configs": ["libs/configs/src/index.ts"],
+      "@freelance-app/contracts": ["libs/contracts/src/index.ts"],
       "@freelance-app/helpers": ["libs/helpers/src/index.ts"],
       "@freelance-app/interfaces": ["libs/interfaces/src/index.ts"]
     }

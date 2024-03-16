@@ -1,3 +1,3 @@
 export enum MicroserviceNames {
-  notification = 'NotificationService'
+  notification = 'NotificationsService'
 }
