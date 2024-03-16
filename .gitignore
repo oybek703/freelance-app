@@ -42,3 +42,9 @@ Thumbs.db
 
 # Docker volumes
 docker/docker-volumes
+
+# Temp data
+data
+
+# Env files
+**/.env

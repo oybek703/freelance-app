@@ -1,1 +1,1 @@
-export * from './lib/winston.config';
+export * from './lib/logger.config'

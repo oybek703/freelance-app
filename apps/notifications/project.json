@@ -1,21 +1,21 @@
 {
-  "name": "freelance-app",
+  "name": "notifications",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/freelance-app/src",
+  "sourceRoot": "apps/notifications/src",
   "projectType": "application",
   "targets": {
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "freelance-app:build"
+        "buildTarget": "notifications:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "freelance-app:build:development"
+          "buildTarget": "notifications:build:development"
         },
         "production": {
-          "buildTarget": "freelance-app:build:production"
+          "buildTarget": "notifications:build:production"
         }
       }
     }
