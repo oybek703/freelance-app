@@ -4,7 +4,7 @@ import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq'
 import { AuthEmail, OrderEmail } from '@freelance-app/contracts'
 
 export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
-  const rabbitmqEndpoint = configService.get(EnvVariableKeys.rabbitmqEndpoint)
+  const rabbitmqEndpoint = configService.get<string>(EnvVariableKeys.rabbitmqEndpoint)
   return {
     uri: rabbitmqEndpoint,
     exchanges: [
