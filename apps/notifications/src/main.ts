@@ -1,15 +1,17 @@
-import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app/app.module'
+import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
-import { EnvVariableKeys } from './shared/app.constants'
+import { EnvVariableKeys } from './app.constants'
+import { getLogger } from './configs/logger.config'
+import { WinstonModule } from 'nest-winston'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const logger = getLogger('debug')
+  const app = await NestFactory.create(AppModule, { logger: WinstonModule.createLogger({ instance: logger }) })
   const configService = app.get(ConfigService)
-  const port = configService.get(EnvVariableKeys.port)
+  const port = configService.get<number>(EnvVariableKeys.port)
   await app.listen(port)
-  Logger.log(`🚀 Notification service is running on port ${port}`)
+  logger.log('info', `Notifications service is running on port ${port}`)
 }
 
 bootstrap()
