@@ -48,3 +48,6 @@ data
 
 # Env files
 **/.env
+
+# Inner package-lock.json
+apps/**/package-lock.json

@@ -4,10 +4,12 @@ import { ConfigService } from '@nestjs/config'
 import { EnvVariableKeys } from './app.constants'
 import { getLogger } from './configs/logger.config'
 import { WinstonModule } from 'nest-winston'
+import { ShutdownSignal } from '@nestjs/common'
 
 async function bootstrap() {
   const logger = getLogger('debug')
   const app = await NestFactory.create(AppModule, { logger: WinstonModule.createLogger({ instance: logger }) })
+  app.enableShutdownHooks([ShutdownSignal.SIGINT])
   const configService = app.get(ConfigService)
   const port = configService.get<number>(EnvVariableKeys.port)
   await app.listen(port)

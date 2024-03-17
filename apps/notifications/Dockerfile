@@ -2,13 +2,11 @@ FROM node:21-alpine3.18
 
 WORKDIR /app
 
-ADD package*.json ./
+COPY ./dist ./
 
 RUN npm install
 
-ADD . .
-
-RUN npm run build
+COPY . .
 
 EXPOSE 4001
 
