@@ -50,6 +50,6 @@ export class AuthEmailConsumer implements OnApplicationShutdown {
         verifyLink
       }
     })
-    this.logger.log('Email send successfully!')
+    this.logger.log('Email sent successfully.')
   }
 }

@@ -1,6 +1,6 @@
 export
 
-start: build_notifications
+start:
 	docker-compose up -d
 
 stop:
@@ -10,8 +10,5 @@ clean:
 	docker-compose down
 
 rebuild:
-	docker-compose up --build
-
-build_notifications:
-	 bash build-service.sh notifications
+	docker-compose up -d --build
 

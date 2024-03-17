@@ -113,6 +113,7 @@ services:
       - ELASTIC_APM_SECRET_TOKEN=123
     depends_on:
       - elasticsearch
+      - rabbitmq
 
 
 
