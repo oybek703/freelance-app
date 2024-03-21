@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ElasticsearchModule } from '@nestjs/elasticsearch'
 import { getElasticsearchConfig } from './shared/configs/elasticsearch.config'
@@ -10,7 +9,6 @@ import { getElasticsearchConfig } from './shared/configs/elasticsearch.config'
     ConfigModule.forRoot({ isGlobal: true }),
     ElasticsearchModule.registerAsync({ inject: [ConfigService], useFactory: getElasticsearchConfig })
   ],
-  controllers: [AppController],
-  providers: [AppService]
+  controllers: [AppController]
 })
 export class AppModule {}
