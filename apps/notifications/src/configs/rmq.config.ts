@@ -1,10 +1,10 @@
 import { ConfigService } from '@nestjs/config'
-import { EnvVariableKeys } from '../app.constants'
+import { NotificationsEnvVariableKeys } from '../app.constants'
 import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq'
 import { AuthEmail, OrderEmail } from '@freelance-app/contracts'
 
 export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
-  const rabbitmqEndpoint = configService.get<string>(EnvVariableKeys.rabbitmqEndpoint)
+  const rabbitmqEndpoint = configService.get<string>(NotificationsEnvVariableKeys.rabbitmqEndpoint)
   return {
     uri: rabbitmqEndpoint,
     exchanges: [

@@ -1,14 +1,14 @@
 import { MailerOptions } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
-import { EnvVariableKeys } from '../app.constants'
+import { NotificationsEnvVariableKeys } from '../app.constants'
 import { join } from 'path'
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
 
 export const getMailerConfig = (configService: ConfigService): MailerOptions => {
-  const smtpHost = configService.get<string>(EnvVariableKeys.smtpHost)
-  const smtpPort = configService.get<string>(EnvVariableKeys.smtpPort)
-  const smtpUserEmail = configService.get<string>(EnvVariableKeys.smtpUserEmail)
-  const smtpUserPassword = configService.get<string>(EnvVariableKeys.smtpUserPassword)
+  const smtpHost = configService.get<string>(NotificationsEnvVariableKeys.smtpHost)
+  const smtpPort = configService.get<string>(NotificationsEnvVariableKeys.smtpPort)
+  const smtpUserEmail = configService.get<string>(NotificationsEnvVariableKeys.smtpUserEmail)
+  const smtpUserPassword = configService.get<string>(NotificationsEnvVariableKeys.smtpUserPassword)
   return {
     transport: {
       host: smtpHost,

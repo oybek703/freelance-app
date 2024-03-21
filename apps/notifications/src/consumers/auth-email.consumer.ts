@@ -3,7 +3,7 @@ import { AmqpConnection, RabbitRPC } from '@golevelup/nestjs-rabbitmq'
 import { AuthEmail } from '@freelance-app/contracts'
 import { MailerService } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
-import { appIconUrl, EnvVariableKeys } from '../app.constants'
+import { appIconUrl, NotificationsEnvVariableKeys } from '../app.constants'
 import { renderFile } from 'ejs'
 import { join } from 'path'
 import { NotificationsEmailTemplates } from '@freelance-app/helpers'
@@ -36,7 +36,7 @@ export class AuthEmailConsumer implements OnApplicationShutdown {
     queue: AuthEmail.queue
   })
   public async handleAuthEmail(msg: AuthEmail.Request) {
-    const clientUrl = this.configService.get<string>(EnvVariableKeys.clientUrl)
+    const clientUrl = this.configService.get<string>(NotificationsEnvVariableKeys.clientUrl)
     const { receiverEmail, template, verifyLink } = msg
     const { subject, templateFile } = await this.getTemplateData(template)
     await this.mailerService.sendMail({
