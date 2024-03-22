@@ -10,8 +10,9 @@ import { NotificationsEmailTemplates } from '@freelance-app/helpers'
 
 @Injectable()
 export class AuthEmailConsumer implements OnApplicationShutdown {
+  private readonly logger = new Logger(AuthEmailConsumer.name)
+
   constructor(
-    private readonly logger: Logger,
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
     private readonly amqpConnection: AmqpConnection

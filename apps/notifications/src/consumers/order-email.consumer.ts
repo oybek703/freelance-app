@@ -4,7 +4,9 @@ import { OrderEmail } from '@freelance-app/contracts'
 
 @Injectable()
 export class OrderEmailConsumer implements OnApplicationShutdown {
-  constructor(private readonly logger: Logger, private readonly amqpConnection: AmqpConnection) {}
+  private readonly logger = new Logger(OrderEmailConsumer.name)
+
+  constructor(private readonly amqpConnection: AmqpConnection) {}
 
   async onApplicationShutdown(signal?: ShutdownSignal) {
     if (signal === ShutdownSignal.SIGINT) {
