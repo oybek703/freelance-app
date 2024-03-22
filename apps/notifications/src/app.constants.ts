@@ -1,4 +1,4 @@
-export enum EnvVariableKeys {
+export enum NotificationsEnvVariableKeys {
   enableApm = 'ENABLE_APM',
   nodeEnv = 'NODE_ENV',
   port = 'PORT',
