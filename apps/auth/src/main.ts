@@ -9,6 +9,8 @@ import { AuthEnvVariableKeys } from './shared/app.constants'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   const configService = app.get(ConfigService)
+  const apiGatewayURL = configService.get<string>(AuthEnvVariableKeys.apiGatewayURL)
+  app.enableCors({ origin: [apiGatewayURL], credentials: true })
   const logger = getLogger(configService, 'debug')
   app.useLogger(WinstonModule.createLogger({ instance: logger }))
   app.enableShutdownHooks([ShutdownSignal.SIGINT])
