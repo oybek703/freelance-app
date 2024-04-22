@@ -1,6 +1,7 @@
 export enum MicroserviceNames {
   notification = 'NotificationsService',
-  gateway = 'GatewayService'
+  gateway = 'GatewayService',
+  auth = 'AuthService'
 }
 
 export enum NotificationsEmailTemplates {

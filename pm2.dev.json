@@ -1,14 +1,19 @@
 {
   "apps": [
     {
+      "name": "gateway",
+      "script": "npx",
+      "args": "nx run gateway:serve"
+    },
+    {
       "name": "notifications",
       "script": "npx",
       "args": "nx run notifications:serve"
     },
     {
-      "name": "gateway",
+      "name": "auth",
       "script": "npx",
-      "args": "nx run gateway:serve"
+      "args": "nx run auth:serve"
     }
   ]
 }
