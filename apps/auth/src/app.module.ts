@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common'
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ElasticsearchModule } from '@nestjs/elasticsearch'
@@ -8,6 +8,8 @@ import { getRmqConfig } from './shared/configs/rmq.config'
 import { SequelizeModule } from '@nestjs/sequelize'
 import { getSequelizeConfig } from './shared/configs/sequelize.config'
 import { UsersModule } from './users/users.module'
+import { AuthEmailProducer } from './producers/auth-email.producer'
+import { UserMiddleware } from './shared/middlewares/user.middleware'
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { UsersModule } from './users/users.module'
     UsersModule
   ],
   controllers: [AppController],
-  providers: [Logger]
+  providers: [Logger, AuthEmailProducer]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(UserMiddleware).forRoutes('*')
+  }
+}

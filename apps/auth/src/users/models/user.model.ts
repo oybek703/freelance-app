@@ -1,4 +1,5 @@
-import { Column, DataType, Index, Model, Table } from 'sequelize-typescript'
+import { BeforeCreate, BeforeUpdate, Column, DataType, Index, Model, Table } from 'sequelize-typescript'
+import { genSalt, hash } from 'bcryptjs'
 
 @Table({
   timestamps: true,
@@ -6,7 +7,7 @@ import { Column, DataType, Index, Model, Table } from 'sequelize-typescript'
   tableName: 'users',
   underscored: true
 })
-export class Users extends Model {
+export class User extends Model {
   @Index({ unique: true })
   @Column({ type: DataType.STRING, allowNull: false })
   username: string
@@ -39,4 +40,11 @@ export class Users extends Model {
 
   @Column({ type: DataType.DATE, allowNull: false, defaultValue: Date.now() })
   passwordResetExpires: Date
+
+  @BeforeCreate
+  @BeforeUpdate
+  static async hashPassword(instance: User) {
+    const salt = await genSalt(10)
+    instance.password = await hash(instance.password, salt)
+  }
 }

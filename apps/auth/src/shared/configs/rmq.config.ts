@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config'
 import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq'
-import { AuthEmail, OrderEmail } from '@freelance-app/contracts'
+import { AuthEmail, BuyerUpdate } from '@freelance-app/contracts'
 import { AuthEnvVariableKeys } from '../app.constants'
 
 export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
@@ -15,7 +15,7 @@ export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
         createExchangeIfNotExists: true
       },
       {
-        name: OrderEmail.exchange,
+        name: BuyerUpdate.exchange,
         options: { durable: true, autoDelete: false },
         type: 'direct',
         createExchangeIfNotExists: true
@@ -29,10 +29,10 @@ export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
         exchange: AuthEmail.exchange
       },
       {
-        name: OrderEmail.queue,
-        routingKey: OrderEmail.routingKey,
+        name: BuyerUpdate.queue,
+        routingKey: BuyerUpdate.routingKey,
         createQueueIfNotExists: true,
-        exchange: OrderEmail.exchange
+        exchange: BuyerUpdate.exchange
       }
     ]
   }

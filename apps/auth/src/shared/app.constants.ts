@@ -15,3 +15,9 @@ export enum AuthEnvVariableKeys {
   cloudinaryApiKey = 'CLOUDINARY_API_KEY',
   cloudinaryApiSecret = 'CLOUDINARY_API_SECRET'
 }
+
+export enum AuthCommonErrors {
+  userAlreadyExists = 'User already exists.',
+  fileUploadError = 'File upload error. Try again later',
+  invalidCredentials = 'Invalid credentials.'
+}

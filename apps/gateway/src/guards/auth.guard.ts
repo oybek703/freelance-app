@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
-import { verify } from 'jsonwebtoken'
 import { Observable } from 'rxjs'
+import { AuthRequest, IJwtPayload } from '@freelance-app/interfaces'
+import { verify } from 'jsonwebtoken'
 import { ConfigService } from '@nestjs/config'
 import { GatewayEnvVariableKeys } from '../shared/app.constants'
-import { AuthRequest } from '@freelance-app/interfaces'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -12,16 +12,15 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly configService: ConfigService) {}
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const unAuthorizedException = new UnauthorizedException()
+    const unauthorizedException = new UnauthorizedException()
     const request: AuthRequest = context.switchToHttp().getRequest()
-    const jwtSession = request?.session?.jwt
-    if (!jwtSession) throw unAuthorizedException
+    if (!request.session?.jwt) throw UnauthorizedException
     try {
       const jwtToken = this.configService.get(GatewayEnvVariableKeys.jwtToken)
-      request.currentUser = verify(jwtSession, jwtToken)
+      request.currentUser = verify(request.session?.jwt, jwtToken) as IJwtPayload
     } catch (e) {
-      this.logger.log(e)
-      throw unAuthorizedException
+      this.logger.error(e)
+      throw unauthorizedException
     }
     return true
   }
