@@ -15,5 +15,6 @@ export class UserMiddleware implements NestMiddleware {
       const token = req.headers.authorization.split(' ')[1]
       req['currentUser'] = verify(token, jwtToken) as IJwtPayload
     }
+    next()
   }
 }

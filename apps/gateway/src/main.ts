@@ -6,11 +6,13 @@ import { ConfigService } from '@nestjs/config'
 import helmet from 'helmet'
 import cookieSession from 'cookie-session'
 import { GatewayEnvVariableKeys } from './shared/app.constants'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   const configService = app.get(ConfigService)
   const logger = getLogger(configService, 'debug')
+  app.useGlobalPipes(new ValidationPipe())
   app.useLogger(WinstonModule.createLogger({ instance: logger }))
   const port = configService.get<number>(GatewayEnvVariableKeys.port)
   const clientUrl = configService.get<string>(GatewayEnvVariableKeys.clientUrl)

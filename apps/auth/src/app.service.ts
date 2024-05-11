@@ -1,24 +1,25 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
-import { InjectModel } from '@nestjs/sequelize'
+import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common'
 import { User } from './models/user.model'
-import { Op } from 'sequelize'
-import { AuthCommonErrors, AuthEnvVariableKeys } from '../shared/app.constants'
-import { v4 as uuid } from 'uuid'
 import { CloudinaryService } from './cloudinary.service'
-import { randomBytes } from 'crypto'
-import { firstLetterUppercase, isEmail, lowerCase, NotificationsEmailTemplates } from '@freelance-app/helpers'
-import { AuthEmailProducer } from '../producers/auth-email.producer'
-import { BuyerUpdateProducer } from '../producers/buyer-update.producer'
-import { BuyerUpdate } from '@freelance-app/contracts'
-import BuyerUpdatesTypes = BuyerUpdate.BuyerUpdatesTypes
-import { sign } from 'jsonwebtoken'
-import { IJwtPayload } from '@freelance-app/interfaces'
+import { AuthEmailProducer } from './producers/auth-email.producer'
+import { BuyerUpdateProducer } from './producers/buyer-update.producer'
 import { ConfigService } from '@nestjs/config'
 import { SignInDto, SignupDto } from '@freelance-app/dtos'
+import { AuthCommonErrors, AuthEnvVariableKeys } from './shared/app.constants'
+import { v4 as uuid } from 'uuid'
+import { randomBytes } from 'crypto'
+import { firstLetterUppercase, isEmail, lowerCase, NotificationsEmailTemplates } from '@freelance-app/helpers'
 import { compare } from 'bcryptjs'
+import { Op } from 'sequelize'
+import { IJwtPayload } from '@freelance-app/interfaces'
+import { sign } from 'jsonwebtoken'
+import { BuyerUpdate } from '@freelance-app/contracts'
+import { InjectModel } from '@nestjs/sequelize'
 
 @Injectable()
-export class UsersService {
+export class AppService {
+  private readonly logger = new Logger(AppService.name)
+
   constructor(
     @InjectModel(User) private userModel: typeof User,
     private readonly cloudinaryService: CloudinaryService,
@@ -35,6 +36,7 @@ export class UsersService {
 
   async signUp(dto: SignupDto) {
     const existingUser = await this.getUserByEmailOrUsername(dto.email, dto.username)
+    this.logger.log('user => ', existingUser)
     if (existingUser) throw new BadRequestException(AuthCommonErrors.userAlreadyExists)
     const profilePublicId = uuid()
     const uploadResult = await this.cloudinaryService.uploadImage(dto.profilePicture, {
@@ -60,7 +62,7 @@ export class UsersService {
       createdAt: newUser.createdAt,
       email: newUser.email,
       profilePicture: newUser.profilePicture,
-      type: BuyerUpdatesTypes.auth
+      type: BuyerUpdate.BuyerUpdatesTypes.auth
     })
     const verificationLink = `${AuthEnvVariableKeys.clientUrl}/confirm_email?token=${emailVerificationToken}`
     await this.authEmailProducer.publishAuthEmail({
@@ -87,6 +89,7 @@ export class UsersService {
 
   async getUserByEmailOrUsername(email: string, username: string) {
     return this.userModel.findOne({
+      raw: true,
       where: { [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }] }
     })
   }

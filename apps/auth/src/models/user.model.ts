@@ -7,7 +7,7 @@ import { genSalt, hash } from 'bcryptjs'
   tableName: 'users',
   underscored: true
 })
-export class User extends Model {
+export class User extends Model<User> {
   @Index({ unique: true })
   @Column({ type: DataType.STRING, allowNull: false })
   username: string

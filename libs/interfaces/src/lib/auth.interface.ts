@@ -7,7 +7,7 @@ export interface IJwtPayload {
   username: string
 }
 
-export class AuthRequest extends Request {
+export interface AuthRequest extends Request {
   currentUser: IJwtPayload
   session: {
     jwt?: string

@@ -19,7 +19,7 @@ export class GatewayGuard implements CanActivate {
     if (!gatewayToken) throw forbiddenException
     try {
       const gatewayJwtToken = this.configService.get(AuthEnvVariableKeys.gatewayJwtToken)
-      const gatewayPayload = verify(gatewayToken, gatewayJwtToken) as IGatewayPayload
+      const gatewayPayload = verify(gatewayToken as string, gatewayJwtToken) as IGatewayPayload
       if (!Object.values(MicroserviceNames).includes(gatewayPayload?.id)) throw forbiddenException
     } catch (e) {
       this.logger.log(e)

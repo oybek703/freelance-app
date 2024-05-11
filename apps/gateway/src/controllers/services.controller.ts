@@ -1,19 +1,27 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, InternalServerErrorException, Logger, Post, Req, UseGuards } from '@nestjs/common'
 import { AxiosService } from '../axios.service'
 import { SignInDto, SignupDto } from '@freelance-app/dtos'
 import { BaseURLRoutes } from '@freelance-app/helpers'
 import { Request } from 'express'
 import { AuthGuard } from '../guards/auth.guard'
+import { AxiosError } from 'axios'
 
 @Controller(BaseURLRoutes.apiGatewayBaseURL)
 export class ServicesController {
+  private readonly logger = new Logger(ServicesController.name)
+
   constructor(private readonly axiosService: AxiosService) {}
 
   @Post('auth/signup')
   async signUp(@Req() req: Request, @Body() body: SignupDto) {
-    const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signup`, body)
-    req.session = { jwt: data.token }
-    return data
+    try {
+      const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signup`, body)
+      req.session = { jwt: data.token }
+      return data
+    } catch (e) {
+      if (e instanceof AxiosError) this.logger.error(e?.response?.data, { method: ServicesController.prototype.signUp })
+      throw new InternalServerErrorException()
+    }
   }
 
   @Post('auth/signin')
