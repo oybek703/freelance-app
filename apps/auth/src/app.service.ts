@@ -1,11 +1,11 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common'
-import { User } from './models/user.model'
+import { BadRequestException, ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common'
+import { User } from './database/models/user.model'
 import { CloudinaryService } from './cloudinary.service'
 import { AuthEmailProducer } from './producers/auth-email.producer'
 import { BuyerUpdateProducer } from './producers/buyer-update.producer'
 import { ConfigService } from '@nestjs/config'
 import { SignInDto, SignupDto } from '@freelance-app/dtos'
-import { AuthCommonErrors, AuthEnvVariableKeys } from './shared/app.constants'
+import { AuthCommonErrors, AuthEnvVariableKeys, ProviderKeys } from './shared/app.constants'
 import { v4 as uuid } from 'uuid'
 import { randomBytes } from 'crypto'
 import { firstLetterUppercase, isEmail, lowerCase, NotificationsEmailTemplates } from '@freelance-app/helpers'
@@ -14,14 +14,13 @@ import { Op } from 'sequelize'
 import { IJwtPayload } from '@freelance-app/interfaces'
 import { sign } from 'jsonwebtoken'
 import { BuyerUpdate } from '@freelance-app/contracts'
-import { InjectModel } from '@nestjs/sequelize'
 
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name)
 
   constructor(
-    @InjectModel(User) private userModel: typeof User,
+    @Inject(ProviderKeys.USER_REPOSITORY) private userRepository: typeof User,
     private readonly cloudinaryService: CloudinaryService,
     private readonly authEmailProducer: AuthEmailProducer,
     private readonly buyerUpdateProducer: BuyerUpdateProducer,
@@ -29,14 +28,13 @@ export class AppService {
   ) {}
 
   async getCurrentUser(userId: string) {
-    const user = this.userModel.findOne({ where: { id: userId } })
+    const user = this.userRepository.findOne({ where: { id: userId } })
     if (!user) throw new ForbiddenException()
     return { user }
   }
 
   async signUp(dto: SignupDto) {
     const existingUser = await this.getUserByEmailOrUsername(dto.email, dto.username)
-    this.logger.log('user => ', existingUser)
     if (existingUser) throw new BadRequestException(AuthCommonErrors.userAlreadyExists)
     const profilePublicId = uuid()
     const uploadResult = await this.cloudinaryService.uploadImage(dto.profilePicture, {
@@ -47,14 +45,15 @@ export class AppService {
     })
     if (!uploadResult.public_id) throw new BadRequestException(AuthCommonErrors.fileUploadError)
     const emailVerificationToken = randomBytes(20).toString('hex')
-    const newUser = await this.userModel.create({
+    const newUser = await this.userRepository.create({
       username: firstLetterUppercase(dto.username),
       email: lowerCase(dto.email),
       profilePublicId,
       country: dto.country,
       emailVerificationToken,
       emailVerified: false,
-      profilePicture: uploadResult?.secure_url
+      profilePicture: uploadResult?.secure_url,
+      password: dto.password
     })
     await this.buyerUpdateProducer.publishBuyerUpdate({
       username: newUser.username,
@@ -78,8 +77,8 @@ export class AppService {
     const { username, password } = dto
     const isUsernameEmail = isEmail(username)
     let user: User
-    if (isUsernameEmail) user = await this.userModel.findOne({ where: { email: username } })
-    else user = await this.userModel.findOne({ where: { username } })
+    if (isUsernameEmail) user = await this.userRepository.findOne({ where: { email: username } })
+    else user = await this.userRepository.findOne({ where: { username } })
     if (!user) throw new BadRequestException(AuthCommonErrors.invalidCredentials)
     const isValidPassword = await compare(password, user.password)
     if (!isValidPassword) throw new BadRequestException(AuthCommonErrors.invalidCredentials)
@@ -88,7 +87,7 @@ export class AppService {
   }
 
   async getUserByEmailOrUsername(email: string, username: string) {
-    return this.userModel.findOne({
+    return this.userRepository.findOne({
       raw: true,
       where: { [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }] }
     })

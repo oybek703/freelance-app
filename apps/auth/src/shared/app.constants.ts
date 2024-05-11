@@ -10,7 +10,11 @@ export enum AuthEnvVariableKeys {
   gatewayJwtToken = 'GATEWAY_JWT_TOKEN',
   jwtToken = 'JWT_TOKEN',
   apiGatewayURL = 'API_GATEWAY_URL',
-  mysqlBbURL = 'MYSQL_DB_URL',
+  mysqlDbHost = 'MYSQL_DB_HOST',
+  mysqlDbPort = 'MYSQL_DB_PORT',
+  mysqlDbUsername = 'MYSQL_DB_USERNAME',
+  mysqlDbPassword = 'MYSQL_DB_PASSWORD',
+  mysqlDbName = 'MYSQL_DB_NAME',
   cloudinaryAccountName = 'CLOUDINARY_ACCOUNT_NAME',
   cloudinaryApiKey = 'CLOUDINARY_API_KEY',
   cloudinaryApiSecret = 'CLOUDINARY_API_SECRET'
@@ -20,4 +24,9 @@ export enum AuthCommonErrors {
   userAlreadyExists = 'User already exists.',
   fileUploadError = 'File upload error. Try again later',
   invalidCredentials = 'Invalid credentials.'
+}
+
+export enum ProviderKeys {
+  USER_REPOSITORY = 'USER_REPOSITORY',
+  SEQUELIZE = 'SEQUELIZE'
 }

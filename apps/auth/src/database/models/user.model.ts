@@ -38,7 +38,7 @@ export class User extends Model<User> {
   @Column({ type: DataType.STRING, allowNull: true })
   passwordResetToken: string
 
-  @Column({ type: DataType.DATE, allowNull: false, defaultValue: Date.now() })
+  @Column({ type: DataType.DATE, allowNull: false, defaultValue: Date.now })
   passwordResetExpires: Date
 
   @BeforeCreate
