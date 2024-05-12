@@ -20,7 +20,8 @@ export const databaseProviders: Provider[] = [
         host: mysqlDbHost,
         username: mysqlDbUsername,
         password: mysqlDbPassword,
-        database: mysqlDbName
+        database: mysqlDbName,
+        logging: false
       })
       sequelize.addModels([User])
       await sequelize.sync()

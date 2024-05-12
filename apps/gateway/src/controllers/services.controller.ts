@@ -1,4 +1,16 @@
-import { Body, Controller, InternalServerErrorException, Logger, Post, Req, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  HttpStatus,
+  InternalServerErrorException,
+  Logger,
+  Post,
+  Req,
+  UseGuards
+} from '@nestjs/common'
 import { AxiosService } from '../axios.service'
 import { SignInDto, SignupDto } from '@freelance-app/dtos'
 import { BaseURLRoutes } from '@freelance-app/helpers'
@@ -14,28 +26,44 @@ export class ServicesController {
 
   @Post('auth/signup')
   async signUp(@Req() req: Request, @Body() body: SignupDto) {
-    try {
+    return this.wrapTryCatch(async () => {
       const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signup`, body)
       req.session = { jwt: data.token }
       return data
-    } catch (e) {
-      if (e instanceof AxiosError) this.logger.error(e?.response?.data, { method: ServicesController.prototype.signUp })
-      throw new InternalServerErrorException()
-    }
+    })
   }
 
   @Post('auth/signin')
   async signIn(@Req() req: Request, @Body() body: SignInDto) {
-    const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signin`, body)
-    req.session = { jwt: data.token }
-    return data
+    return this.wrapTryCatch(async () => {
+      const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signin`, body)
+      req.session = { jwt: data.token }
+      return data
+    })
   }
 
   @UseGuards(AuthGuard)
-  @Post('auth/signup')
+  @Get('auth/current-user')
   async currentUser(@Req() req: Request) {
-    const authInstance = this.axiosService.setToken(this.axiosService.authInstance, req)
-    const { data } = await authInstance.get(`${BaseURLRoutes.authBaseURL}/current-user`)
-    return data
+    return this.wrapTryCatch(async () => {
+      const authInstance = this.axiosService.setToken(this.axiosService.authInstance, req)
+      const { data } = await authInstance.get(`${BaseURLRoutes.authBaseURL}/current-user`)
+      return data
+    })
+  }
+
+  private async wrapTryCatch(func: () => Promise<unknown>) {
+    try {
+      return await func()
+    } catch (e) {
+      this.logger.error(e.response?.data?.message, { method: ServicesController.prototype.signUp })
+      if (e instanceof AxiosError) {
+        const status = e.response?.status
+        const message = e.response?.data?.message
+        if (status === HttpStatus.BAD_REQUEST) throw new BadRequestException(message)
+        if (status === HttpStatus.FORBIDDEN) throw new ForbiddenException(message)
+      }
+      throw new InternalServerErrorException()
+    }
   }
 }

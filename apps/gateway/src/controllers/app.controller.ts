@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common'
 export class AppController {
   @Get('gateway-health')
   getHealth() {
-    return 'Gateway service is healthy.'
+    return { message: 'Gateway service is healthy.' }
   }
 }

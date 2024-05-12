@@ -28,9 +28,10 @@ export class AppService {
   ) {}
 
   async getCurrentUser(userId: string) {
-    const user = this.userRepository.findOne({ where: { id: userId } })
-    if (!user) throw new ForbiddenException()
-    return { user }
+    if (!userId) throw new ForbiddenException()
+    const user = await this.userRepository.findOne({ where: { id: userId } })
+    if (!user) throw new BadRequestException()
+    return { user: { ...user?.dataValues, password: undefined } }
   }
 
   async signUp(dto: SignupDto) {
@@ -70,7 +71,7 @@ export class AppService {
       verifyLink: verificationLink
     })
     const jwtToken = await this.signInToken(newUser)
-    return { user: newUser, token: jwtToken }
+    return { user: { ...newUser?.dataValues, password: undefined }, token: jwtToken }
   }
 
   async signIn(dto: SignInDto) {
@@ -83,7 +84,7 @@ export class AppService {
     const isValidPassword = await compare(password, user.password)
     if (!isValidPassword) throw new BadRequestException(AuthCommonErrors.invalidCredentials)
     const jwtToken = await this.signInToken(user)
-    return { user, token: jwtToken }
+    return { user: { ...user?.dataValues, password: undefined }, token: jwtToken }
   }
 
   async getUserByEmailOrUsername(email: string, username: string) {

@@ -15,14 +15,14 @@ export class GatewayGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const forbiddenException = new ForbiddenException()
     const request: AuthRequest = context.switchToHttp().getRequest()
-    const gatewayToken = request?.headers['gatewayToken']
+    const gatewayToken = request?.headers['gatewaytoken']
     if (!gatewayToken) throw forbiddenException
     try {
       const gatewayJwtToken = this.configService.get(AuthEnvVariableKeys.gatewayJwtToken)
       const gatewayPayload = verify(gatewayToken as string, gatewayJwtToken) as IGatewayPayload
       if (!Object.values(MicroserviceNames).includes(gatewayPayload?.id)) throw forbiddenException
     } catch (e) {
-      this.logger.log(e)
+      this.logger.log(String(e), { method: GatewayGuard.prototype.canActivate })
       throw forbiddenException
     }
     return true
