@@ -9,6 +9,7 @@ import {
   Logger,
   Param,
   Post,
+  Query,
   Req,
   UseGuards
 } from '@nestjs/common'
@@ -25,12 +26,33 @@ import { BaseURLRoutes } from '@freelance-app/helpers'
 import { Request } from 'express'
 import { AuthGuard } from '../guards/auth.guard'
 import { AxiosError } from 'axios'
+import { IGigPaginateProps, IGigSearchOptions } from '@freelance-app/interfaces'
 
 @Controller(BaseURLRoutes.apiGatewayBaseURL)
 export class AuthServiceController {
   private readonly logger = new Logger(AuthServiceController.name)
 
   constructor(private readonly axiosService: AxiosService) {}
+
+  @Get('search/gig/:gigId')
+  async getGigById(@Param('gigId') gigId: string) {
+    return this.wrapTryCatch(async () => {
+      const { data } = await this.axiosService.authInstance.get(`${BaseURLRoutes.authBaseURL}/search/gig/${gigId}`)
+      return data
+    })
+  }
+
+  @Get('search/gig/:from/:size/:type')
+  async searchGigs(@Param() params: IGigPaginateProps, @Query() queryParams: IGigSearchOptions) {
+    return this.wrapTryCatch(async () => {
+      const { from, size, type } = params
+      const { data } = await this.axiosService.authInstance.get(
+        `${BaseURLRoutes.authBaseURL}/search/gig/${from}/${size}/${type}`,
+        { params: queryParams }
+      )
+      return data
+    })
+  }
 
   @Post('auth/signup')
   async signUp(@Req() req: Request, @Body() body: SignupDto) {

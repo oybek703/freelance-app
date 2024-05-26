@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { UploadApiOptions, v2 } from 'cloudinary'
 import { ConfigService } from '@nestjs/config'
-import { AuthEnvVariableKeys } from './shared/app.constants'
+import { AuthEnvVariableKeys } from '../shared/app.constants'
 
 @Injectable()
 export class CloudinaryService {

@@ -31,3 +31,5 @@ export enum ProviderKeys {
   USER_REPOSITORY = 'USER_REPOSITORY',
   SEQUELIZE = 'SEQUELIZE'
 }
+
+export const GigsIndexName = 'gigs'

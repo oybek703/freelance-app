@@ -1,8 +1,8 @@
-import { BadRequestException, ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common'
-import { User } from './database/models/user.model'
+import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common'
+import { User } from '../database/models/user.model'
 import { CloudinaryService } from './cloudinary.service'
-import { AuthEmailProducer } from './producers/auth-email.producer'
-import { BuyerUpdateProducer } from './producers/buyer-update.producer'
+import { AuthEmailProducer } from '../producers/auth-email.producer'
+import { BuyerUpdateProducer } from '../producers/buyer-update.producer'
 import { ConfigService } from '@nestjs/config'
 import {
   ChangePasswordDto,
@@ -12,7 +12,7 @@ import {
   SignInDto,
   SignupDto
 } from '@freelance-app/dtos'
-import { AuthCommonErrors, AuthEnvVariableKeys, ProviderKeys } from './shared/app.constants'
+import { AuthCommonErrors, AuthEnvVariableKeys, ProviderKeys } from '../shared/app.constants'
 import { v4 as uuid } from 'uuid'
 import { randomBytes } from 'crypto'
 import { firstLetterUppercase, isEmail, lowerCase, NotificationsEmailTemplates } from '@freelance-app/helpers'
@@ -24,8 +24,6 @@ import { BuyerUpdate } from '@freelance-app/contracts'
 
 @Injectable()
 export class AppService {
-  private readonly logger = new Logger(AppService.name)
-
   constructor(
     @Inject(ProviderKeys.USER_REPOSITORY) private userRepository: typeof User,
     private readonly cloudinaryService: CloudinaryService,

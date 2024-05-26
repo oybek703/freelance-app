@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
 import {
   ChangePasswordDto,
   ForgotPasswordDto,
@@ -7,20 +7,31 @@ import {
   SignInDto,
   SignupDto
 } from '@freelance-app/dtos'
-import { AuthRequest } from '@freelance-app/interfaces'
-import { AppService } from './app.service'
+import { AuthRequest, IGigPaginateProps, IGigSearchOptions } from '@freelance-app/interfaces'
+import { AppService } from './services/app.service'
 import { BaseURLRoutes } from '@freelance-app/helpers'
 import { GatewayGuard } from './shared/guards/gateway.guard'
+import { SearchService } from './services/search.service'
 
 @Controller()
 export class AppController {
-  private readonly logger = new Logger(AppService.name)
-
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService, private readonly searchService: SearchService) {}
 
   @Get('auth-health')
   getHealth() {
     return { message: 'Auth service is healthy.' }
+  }
+
+  @UseGuards(GatewayGuard)
+  @Get(`${BaseURLRoutes.authBaseURL}/search/gig/:from/:size/:type`)
+  async searchGigs(@Param() params: IGigPaginateProps, @Query() queryParams: IGigSearchOptions) {
+    return this.searchService.searchGigs(params, queryParams)
+  }
+
+  @UseGuards(GatewayGuard)
+  @Get(`${BaseURLRoutes.authBaseURL}/search/gig/:gigId`)
+  async getGigById(@Param('gigId') gigId: string) {
+    return this.searchService.getGigById(gigId)
   }
 
   @UseGuards(GatewayGuard)
