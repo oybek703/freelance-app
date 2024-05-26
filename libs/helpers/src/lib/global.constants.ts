@@ -1,9 +1,16 @@
 export enum MicroserviceNames {
   notification = 'NotificationsService',
-  gateway = 'GatewayService'
+  gateway = 'GatewayService',
+  auth = 'AuthService'
 }
 
 export enum NotificationsEmailTemplates {
   verifyEmail = 'verify-email',
-  forgotPassword = 'forgot-password'
+  forgotPassword = 'forgot-password',
+  resetPasswordSuccess = 'reset-password-success'
+}
+
+export enum BaseURLRoutes {
+  authBaseURL = 'api/v1/auth',
+  apiGatewayBaseURL = 'api/gateway/v1'
 }

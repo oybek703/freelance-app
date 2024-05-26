@@ -1,0 +1,6 @@
+export * from './lib/auth/signup.dto'
+export * from './lib/auth/sign-in.dto'
+export * from './lib/auth/forgot-password.dto'
+export * from './lib/auth/reset-password.dto'
+export * from './lib/auth/change-password.dto'
+export * from './lib/auth/resend-email.dto'

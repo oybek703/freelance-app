@@ -1,14 +1,19 @@
 import { Request } from 'express'
+import { MicroserviceNames } from '@freelance-app/helpers'
 
 export interface IJwtPayload {
   id: string
-  iat: number
+  email: string
+  username: string
 }
 
-export class AuthRequest extends Request {
-  // TODO Type these later
-  currentUser: unknown
+export interface AuthRequest extends Request {
+  currentUser: IJwtPayload
   session: {
     jwt?: string
   }
+}
+
+export interface IGatewayPayload {
+  id: MicroserviceNames
 }
