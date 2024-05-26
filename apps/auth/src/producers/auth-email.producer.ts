@@ -18,6 +18,6 @@ export class AuthEmailProducer implements OnApplicationShutdown {
 
   public async publishAuthEmail(msg: AuthEmail.Request) {
     await this.amqpConnection.publish(AuthEmail.exchange, AuthEmail.routingKey, msg)
-    this.logger.log('Email sent successfully.')
+    this.logger.log(`[${msg.template}] Email sent successfully.`)
   }
 }

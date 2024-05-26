@@ -38,7 +38,7 @@ export class AuthEmailConsumer implements OnApplicationShutdown {
   })
   public async handleAuthEmail(msg: AuthEmail.Request) {
     const clientUrl = this.configService.get<string>(NotificationsEnvVariableKeys.clientUrl)
-    const { receiverEmail, template, verifyLink } = msg
+    const { receiverEmail, template, verifyLink, username, resetLink } = msg
     const { subject, templateFile } = await this.getTemplateData(template)
     await this.mailerService.sendMail({
       to: receiverEmail,
@@ -48,9 +48,11 @@ export class AuthEmailConsumer implements OnApplicationShutdown {
       context: {
         appLink: clientUrl,
         appIcon: appIconUrl,
-        verifyLink
+        verifyLink,
+        username,
+        resetLink
       }
     })
-    this.logger.log('Email sent successfully.')
+    this.logger.log(`[${msg.template}] Email sent successfully.`)
   }
 }

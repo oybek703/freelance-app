@@ -6,8 +6,10 @@ export namespace AuthEmail {
   export const queue = 'auth-email-queue'
 
   export class Request {
-    receiverEmail: string
-    verifyLink: string
+    receiverEmail?: string
+    verifyLink?: string
+    resetLink?: string
+    username?: string
     template: NotificationsEmailTemplates
   }
 }

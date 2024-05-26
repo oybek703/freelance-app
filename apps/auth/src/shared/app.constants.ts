@@ -23,7 +23,8 @@ export enum AuthEnvVariableKeys {
 export enum AuthCommonErrors {
   userAlreadyExists = 'User already exists.',
   fileUploadError = 'File upload error. Try again later',
-  invalidCredentials = 'Invalid credentials.'
+  invalidCredentials = 'Invalid credentials.',
+  passwordsDoNotMatch = 'Passwords do not match.'
 }
 
 export enum ProviderKeys {

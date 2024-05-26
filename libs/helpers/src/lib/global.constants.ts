@@ -6,7 +6,8 @@ export enum MicroserviceNames {
 
 export enum NotificationsEmailTemplates {
   verifyEmail = 'verify-email',
-  forgotPassword = 'forgot-password'
+  forgotPassword = 'forgot-password',
+  resetPasswordSuccess = 'reset-password-success'
 }
 
 export enum BaseURLRoutes {
