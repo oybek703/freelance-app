@@ -1,7 +1,8 @@
 export enum MicroserviceNames {
   notification = 'NotificationsService',
   gateway = 'GatewayService',
-  auth = 'AuthService'
+  auth = 'AuthService',
+  users = 'UsersService'
 }
 
 export enum NotificationsEmailTemplates {
@@ -13,4 +14,8 @@ export enum NotificationsEmailTemplates {
 export enum BaseURLRoutes {
   authBaseURL = 'api/v1/auth',
   apiGatewayBaseURL = 'api/gateway/v1'
+}
+
+export enum GlobalHeaderKeys {
+  gatewayToken = 'gateway-token'
 }

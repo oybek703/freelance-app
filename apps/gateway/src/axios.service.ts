@@ -3,7 +3,7 @@ import axios from 'axios'
 import { sign } from 'jsonwebtoken'
 import { ConfigService } from '@nestjs/config'
 import { GatewayEnvVariableKeys } from './shared/app.constants'
-import { MicroserviceNames } from '@freelance-app/helpers'
+import { GlobalHeaderKeys, MicroserviceNames } from '@freelance-app/helpers'
 import { Request } from 'express'
 
 type AxiosCreateType = ReturnType<typeof axios.create>
@@ -30,7 +30,7 @@ export class AxiosService {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        gatewayToken: requestGatewayToken
+        [GlobalHeaderKeys.gatewayToken]: requestGatewayToken
       },
       withCredentials: true
     })

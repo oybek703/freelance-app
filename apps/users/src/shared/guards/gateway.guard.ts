@@ -4,7 +4,7 @@ import { Observable } from 'rxjs'
 import { AuthRequest, IGatewayPayload } from '@freelance-app/interfaces'
 import { verify } from 'jsonwebtoken'
 import { GlobalHeaderKeys, MicroserviceNames } from '@freelance-app/helpers'
-import { AuthEnvVariableKeys } from '../app.constants'
+import { UsersEnvVariableKeys } from '../app.constants'
 
 @Injectable()
 export class GatewayGuard implements CanActivate {
@@ -18,7 +18,7 @@ export class GatewayGuard implements CanActivate {
     const gatewayToken = request?.headers[GlobalHeaderKeys.gatewayToken]
     if (!gatewayToken) throw forbiddenException
     try {
-      const gatewayJwtToken = this.configService.get(AuthEnvVariableKeys.gatewayJwtToken)
+      const gatewayJwtToken = this.configService.get(UsersEnvVariableKeys.gatewayJwtToken)
       const gatewayPayload = verify(gatewayToken as string, gatewayJwtToken) as IGatewayPayload
       if (!Object.values(MicroserviceNames).includes(gatewayPayload?.id)) throw forbiddenException
     } catch (e) {
