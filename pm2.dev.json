@@ -2,18 +2,18 @@
   "apps": [
     {
       "name": "gateway",
-      "script": "npx",
-      "args": "nx run gateway:serve"
+      "cwd": "microservices/gateway",
+      "script": "npm run start:dev"
     },
     {
       "name": "notifications",
-      "script": "npx",
-      "args": "nx run notifications:serve"
+      "cwd": "microservices/notifications",
+      "script": "npm run start:dev"
     },
     {
       "name": "auth",
-      "script": "npx",
-      "args": "nx run auth:serve"
+      "cwd": "microservices/auth",
+      "script": "npm run start:dev"
     }
   ]
 }
