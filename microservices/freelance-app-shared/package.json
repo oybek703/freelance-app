@@ -1,0 +1,41 @@
+{
+  "name": "@oybek703/freelance-app-shared",
+  "version": "1.1.7",
+  "description": "Freelance App shared library",
+  "types": "./src/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "tsup ./src && node scripts/build-package.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oybek703/freelance-app-shared.git"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "keywords": [],
+  "author": "Oybek Yoriqulov",
+  "license": "MIT",
+  "devDependencies": {
+    "@swc/core": "^1.7.6",
+    "@types/express": "^4.17.21",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.3.10",
+    "express": "^4.19.2",
+    "winston": "^3.13.1",
+    "winston-elasticsearch": "^0.19.0"
+  }
+}

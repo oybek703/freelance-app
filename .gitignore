@@ -38,8 +38,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx/cache
-
 # Docker volumes
 docker/docker-volumes
 
