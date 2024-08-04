@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "gateway",
+      "cwd": "microservices/gateway",
+      "script": "npm run start:dev"
+    },
+    {
+      "name": "notifications",
+      "cwd": "microservices/notifications",
+      "script": "npm run start:dev"
+    },
+    {
+      "name": "auth",
+      "cwd": "microservices/auth",
+      "script": "npm run start:dev"
+    }
+  ]
+}
