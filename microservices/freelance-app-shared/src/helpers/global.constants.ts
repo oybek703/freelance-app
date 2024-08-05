@@ -19,3 +19,8 @@ export enum BaseURLRoutes {
 export enum GlobalHeaderKeys {
   gatewayToken = 'gateway-token'
 }
+
+export enum TokenEnvKeys {
+  jwtToken = 'JWT_TOKEN',
+  gatewayJwtToken = 'GATEWAY_JWT_TOKEN'
+}

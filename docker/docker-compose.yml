@@ -9,15 +9,15 @@ services:
       - '6379:6379'
     command: redis-server --loglevel warning
     volumes:
-      - ./docker-volumes/cache:/data
+      - ./volumes/cache:/data
   mongodb:
     container_name: mongodb_container
     image: mongo
     restart: always
     ports:
-      - '27019:27019'
+      - '27019:27017'
     volumes:
-      - ./docker-volumes/mongodb:/data/db
+      - ./volumes/mongodb:/data/db
   mysql:
     container_name: mysql_container
     image: mysql
@@ -31,7 +31,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - ./docker-volumes/mysql:/var/lib/mysql
+      - ./volumes/mysql:/var/lib/mysql
   postgres:
     container_name: postgres_container
     image: postgres
@@ -43,7 +43,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./docker-volumes/postgres:/var/lib/postgresql
+      - ./volumes/postgres:/var/lib/postgresql
   rabbitmq:
     container_name: rabbitmq_container
     image: rabbitmq:3-management
@@ -72,7 +72,7 @@ services:
       - '9300:9300'
       - '9200:9200'
     volumes:
-      - ./docker-volumes/elasticsearch-data:/usr/share/elasticsearch/data
+      - ./volumes/elasticsearch-data:/usr/share/elasticsearch/data
     networks:
       - elastic
   kibana:
@@ -89,7 +89,17 @@ services:
       - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
     depends_on:
       - elasticsearch
-
+#  gateway:
+#    container_name: gateway_container
+#    build:
+#      context: ../microservices/gateway
+#      dockerfile: Dockerfile.dev
+#    restart: always
+#    ports:
+#      - '4000:4000'
+#    env_file: ../microservices/gateway/.env
+#    depends_on:
+#      - elasticsearch
 
 
 networks:

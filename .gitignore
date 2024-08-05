@@ -39,7 +39,7 @@ testem.log
 Thumbs.db
 
 # Docker volumes
-docker/docker-volumes
+docker/volumes
 
 # Temp data
 data
