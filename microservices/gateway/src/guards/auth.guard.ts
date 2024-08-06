@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const unauthorizedException = new UnauthorizedException()
     const request: AuthRequest = context.switchToHttp().getRequest()
-    if (!request.session?.jwt) throw UnauthorizedException
+    if (!request.session?.jwt) throw unauthorizedException
     try {
       const jwtToken = this.configService.get(GatewayEnvVariableKeys.jwtToken)
       request.currentUser = verify(request.session?.jwt, jwtToken) as IJwtPayload

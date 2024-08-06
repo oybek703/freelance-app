@@ -1,5 +1,5 @@
 export namespace BuyerUpdate {
-  export const exchange = 'buyer--update-notification'
+  export const exchange = 'buyer-update-notification'
   export const routingKey = 'buyer-update'
   export const queue = 'buyer-update-queue'
 

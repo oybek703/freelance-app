@@ -18,7 +18,6 @@ export class AxiosService {
   }
 
   setToken(instance: AxiosCreateType, req: Request) {
-    // @ts-ignore TODO: Remove ts-ignore
     instance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`
     return instance
   }

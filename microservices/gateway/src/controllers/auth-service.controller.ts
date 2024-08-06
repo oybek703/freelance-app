@@ -59,7 +59,6 @@ export class AuthServiceController {
   async signUp(@Req() req: Request, @Body() body: SignupDto) {
     return this.wrapTryCatch(async () => {
       const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signup`, body)
-      // @ts-ignore TODO: Remove ts-ignore
       req.session = { jwt: data.token }
       return data
     })
@@ -69,7 +68,6 @@ export class AuthServiceController {
   async signIn(@Req() req: Request, @Body() body: SignInDto) {
     return this.wrapTryCatch(async () => {
       const { data } = await this.axiosService.authInstance.post(`${BaseURLRoutes.authBaseURL}/signin`, body)
-      // @ts-ignore TODO: Remove ts-ignore
       req.session = { jwt: data.token }
       return data
     })
