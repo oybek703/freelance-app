@@ -1,4 +1,4 @@
-## API Gateway Microservice
+## Users Microservice
 * The gateway microservice is responsible for managing requests that comes from the frontend.
 * Every request that comes from the frontend must pass through the `API Gateway Service`.
 * The communication style used in the service is the `Request/Response` pattern.
