@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDate, IsEmail, IsString } from 'class-validator'
+import { IsArray, IsBoolean, IsEmail, IsString } from 'class-validator'
 
 export class BuyerDto {
   @IsString()
@@ -14,11 +14,11 @@ export class BuyerDto {
   country: string
 
   @IsBoolean()
-  isSeller: boolean
+  isSeller?: boolean
 
   @IsArray()
   purchasedGigs: string[]
 
-  @IsDate()
-  createdAt: Date
+  @IsString()
+  createdAt: string
 }

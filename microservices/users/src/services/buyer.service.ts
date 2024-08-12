@@ -3,7 +3,8 @@ import { Buyer, BuyerDocument } from '../schemas/buyer.schema'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { BuyerDto } from '../dtos/buyer.dto'
-import { PurchasedGigsType, UsersCommonErrors } from '../shared/app.constants'
+import { UsersCommonErrors } from '../shared/app.constants'
+import { BuyerUpdate } from '@oybek703/freelance-app-shared'
 
 @Injectable()
 export class BuyerService {
@@ -38,12 +39,11 @@ export class BuyerService {
     await this.buyerModel.updateOne({ where: { email } }, { $set: { isSeller: true } }).exec()
   }
 
-  async updateBuyerPurchasedGigs(buyerId: string, purchasedGigId: string, type: PurchasedGigsType) {
+  async updateBuyerPurchasedGigs(buyerId: string, purchasedGigId: string, type: BuyerUpdate.BuyerUpdatesTypes) {
     // If a type is purchased-gigs, then add gigId to purchasedGigs
-    if (type === PurchasedGigsType.purchasedGigs)
+    if (type === BuyerUpdate.BuyerUpdatesTypes.purchasedGigs)
       await this.buyerModel.updateOne({ _id: buyerId }, { $push: { purchasedGigs: purchasedGigId } }).exec()
-
     // Otherwise, delete gigId from purchasedGigs
-    await this.buyerModel.updateOne({ _id: buyerId }, { $pull: { purchasedGigs: purchasedGigId } }).exec()
+    else await this.buyerModel.updateOne({ _id: buyerId }, { $pull: { purchasedGigs: purchasedGigId } }).exec()
   }
 }

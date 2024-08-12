@@ -20,8 +20,3 @@ export enum UsersCommonErrors {
   buyerAlreadyExists = 'Buyer already exists.',
   sellerAlreadyExists = 'Seller already exists.'
 }
-
-export enum PurchasedGigsType {
-  auth = 'auth',
-  purchasedGigs = 'purchased-gigs'
-}

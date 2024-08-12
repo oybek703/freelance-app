@@ -14,6 +14,7 @@ import { BuyerService } from './services/buyer.service'
 import { SellerService } from './services/seller.service'
 import { Seller, sellerSchema } from './schemas/seller.schema'
 import { SellerController } from './controllers/seller.controller'
+import { BuyerUpdateConsumer } from './consumers/buyer-update.consumer'
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { SellerController } from './controllers/seller.controller'
     ])
   ],
   controllers: [AppController, BuyerController, SellerController],
-  providers: [Logger, BuyerService, SellerService]
+  providers: [Logger, BuyerService, SellerService, BuyerUpdateConsumer]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
