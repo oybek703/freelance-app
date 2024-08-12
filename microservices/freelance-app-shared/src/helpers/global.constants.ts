@@ -12,8 +12,10 @@ export enum NotificationsEmailTemplates {
 }
 
 export enum BaseURLRoutes {
+  apiGatewayBaseURL = 'api/gateway/v1',
   authBaseURL = 'api/v1/auth',
-  apiGatewayBaseURL = 'api/gateway/v1'
+  usersBuyerBaseURL = 'api/v1/buyer',
+  usersSellerBaseURL = 'api/v1/seller'
 }
 
 export enum GlobalHeaderKeys {

@@ -1,6 +1,6 @@
 {
   "name": "@oybek703/freelance-app-shared",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "Freelance App shared library",
   "types": "./src/index.d.ts",
   "files": [
@@ -37,8 +37,6 @@
   "dependencies": {
     "@nestjs/common": "^10.3.10",
     "@nestjs/config": "^3.2.3",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "rxjs": "^7.8.1",

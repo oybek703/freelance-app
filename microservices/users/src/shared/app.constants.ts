@@ -15,3 +15,13 @@ export enum UsersEnvVariableKeys {
   cloudinaryApiKey = 'CLOUDINARY_API_KEY',
   cloudinaryApiSecret = 'CLOUDINARY_API_SECRET'
 }
+
+export enum UsersCommonErrors {
+  buyerAlreadyExists = 'Buyer already exists.',
+  sellerAlreadyExists = 'Seller already exists.'
+}
+
+export enum PurchasedGigsType {
+  auth = 'auth',
+  purchasedGigs = 'purchased-gigs'
+}
