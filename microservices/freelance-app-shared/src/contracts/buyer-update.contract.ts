@@ -10,9 +10,12 @@ export namespace BuyerUpdate {
     country: string
     createdAt: string
     type: BuyerUpdatesTypes
+    buyerId?: string
+    purchasedGig?: string
   }
 
   export enum BuyerUpdatesTypes {
-    auth = 'auth'
+    auth = 'auth',
+    purchasedGigs = 'purchased-gigs'
   }
 }
