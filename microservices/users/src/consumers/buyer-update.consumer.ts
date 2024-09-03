@@ -27,7 +27,7 @@ export class BuyerUpdateConsumer implements OnApplicationShutdown {
   private async handleBuyerUpdate(msg: BuyerUpdate.Request) {
     const { type } = msg
     // If update is from auth, then create a new buyer
-    if (type === BuyerUpdate.BuyerUpdatesTypes.auth)
+    if (type === BuyerUpdate.BuyerUpdatesTypes.auth) {
       await this.buyerService.createBuyer({
         username: msg.username,
         email: msg.email,
@@ -36,6 +36,7 @@ export class BuyerUpdateConsumer implements OnApplicationShutdown {
         createdAt: msg.createdAt,
         purchasedGigs: []
       })
+    }
     // Else update purchasedGigs prop
     else await this.buyerService.updateBuyerPurchasedGigs(msg.buyerId, msg.purchasedGig, type)
   }

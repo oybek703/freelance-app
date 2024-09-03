@@ -30,13 +30,13 @@ export class SellerController {
     res.status(HttpStatus.CREATED).json({ message: 'Seller created successfully.', seller: newSeller })
   }
 
-  @Put(':sellerId')
-  async updateSeller(@Body() dto: SellerDto, @Param('sellerId') sellerId: string) {
-    return this.sellerService.updateSeller(dto, sellerId)
-  }
-
   @Put('seed/:count')
   async seedSellers(@Param('count') count: number) {
     return this.sellerService.seedSellers(count)
+  }
+
+  @Put(':sellerId')
+  async updateSeller(@Body() dto: SellerDto, @Param('sellerId') sellerId: string) {
+    return this.sellerService.updateSeller(dto, sellerId)
   }
 }

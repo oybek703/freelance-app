@@ -57,22 +57,22 @@ export class UsersSellerController {
   }
 
   @UseGuards(AuthGuard)
-  @Put('seller/:sellerId')
-  async updateSeller(@Req() req: Request, @Param('sellerId') sellerId: string) {
+  @Put('seller/seed/:count')
+  async seedSellers(@Req() req: Request, @Param('count') count: number) {
     const func = async () => {
       const usersInstance = this.axiosService.setToken(this.axiosService.usersInstance, req)
-      const { data } = await usersInstance.post(`${BaseURLRoutes.usersSellerBaseURL}/${sellerId}`, req.body)
+      const { data } = await usersInstance.put(`${BaseURLRoutes.usersSellerBaseURL}/seed/${count}`)
       return data
     }
     return this.appService.wrapTryCatch(func, UsersSellerController.prototype.updateSeller.name)
   }
 
   @UseGuards(AuthGuard)
-  @Put('seller/seed/:count')
-  async seedSellers(@Req() req: Request, @Param('count') count: number) {
+  @Put('seller/:sellerId')
+  async updateSeller(@Req() req: Request, @Param('sellerId') sellerId: string) {
     const func = async () => {
       const usersInstance = this.axiosService.setToken(this.axiosService.usersInstance, req)
-      const { data } = await usersInstance.put(`${BaseURLRoutes.usersSellerBaseURL}/seed/${count}`)
+      const { data } = await usersInstance.post(`${BaseURLRoutes.usersSellerBaseURL}/${sellerId}`, req.body)
       return data
     }
     return this.appService.wrapTryCatch(func, UsersSellerController.prototype.updateSeller.name)

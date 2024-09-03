@@ -27,12 +27,12 @@ export class BuyerService {
 
   async createBuyer(dto: BuyerDto) {
     const existingBuyer = await this.buyerModel.findOne<BuyerDocument | null>({ where: { email: dto.email } }).exec()
-    if (!existingBuyer) throw new BadRequestException(UsersCommonErrors.buyerAlreadyExists)
+    if (existingBuyer) throw new BadRequestException(UsersCommonErrors.buyerAlreadyExists)
     await this.buyerModel.create(dto)
   }
 
   async getRandomBuyers(count: number) {
-    return this.buyerModel.aggregate([{ $sample: { size: count } }]).exec()
+    return this.buyerModel.aggregate([{ $sample: { size: +count } }]).exec()
   }
 
   async updateIsSeller(email: string) {
