@@ -17,6 +17,8 @@ export type {
 } from './interfaces/auth.interface'
 export { AuthEmail } from './contracts/auth-email.contract'
 export { BuyerUpdate } from './contracts/buyer-update.contract'
+export { BuyerReview } from './contracts/buyer-review.contract'
+export { SellerUpdate } from './contracts/seller-update.contract'
 export { OrderEmail } from './contracts/order-email.contract'
 export { UpdateGig } from './contracts/update-gig.contract'
 export { SeedGig } from './contracts/seed-gig.contract'

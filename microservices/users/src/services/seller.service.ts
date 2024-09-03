@@ -163,4 +163,64 @@ export class SellerService {
     }
     return result
   }
+
+  async updateOngoingJobs(sellerId: string, ongoingJobs: number) {
+    await this.sellerModel.updateOne({ _id: sellerId }, { $inc: { ongoingJobs } }).exec()
+  }
+
+  async updateCompletedJobs(params: {
+    sellerId: string
+    ongoingJobs: number
+    completedJobs: number
+    totalEarnings: number
+    recentDelivery: Date
+  }) {
+    const { sellerId, ongoingJobs, completedJobs, totalEarnings, recentDelivery } = params
+    await this.sellerModel
+      .updateOne(
+        { _id: sellerId },
+        {
+          $inc: {
+            ongoingJobs,
+            completedJobs,
+            totalEarnings
+          },
+          $set: { recentDelivery: new Date(recentDelivery) }
+        }
+      )
+      .exec()
+  }
+
+  async updateTotalGigsCount(sellerId: string, count: number) {
+    await this.sellerModel.updateOne({ _id: sellerId }, { $inc: { totalGigs: count } }).exec()
+  }
+
+  async updateCancelledJobs(sellerId: string) {
+    await this.sellerModel.updateOne({ _id: sellerId }, { $inc: { ongoingJobs: -1, cancelledJobs: 1 } }).exec()
+  }
+
+  async updateSellerReview(params: { rating: string; sellerId: string }) {
+    const { rating, sellerId } = params
+    const ratingTypes = {
+      '1': 'one',
+      '2': 'two',
+      '3': 'three',
+      '4': 'four',
+      '5': 'five'
+    }
+    const ratingKey = ratingTypes[`${rating}`]
+    await this.sellerModel
+      .updateOne(
+        { _id: sellerId },
+        {
+          $inc: {
+            ratingsCount: 1,
+            ratingSum: rating,
+            [`ratingCategories.${ratingKey}.value`]: rating,
+            [`ratingCategories.${ratingKey}.count`]: 1
+          }
+        }
+      )
+      .exec()
+  }
 }

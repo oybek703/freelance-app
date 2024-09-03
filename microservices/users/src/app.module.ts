@@ -17,6 +17,7 @@ import { SellerController } from './controllers/seller.controller'
 import { BuyerUpdateConsumer } from './consumers/buyer-update.consumer'
 import { UpdateGigProducer } from './producers/update-gig.producer'
 import { SeedGigProducer } from './producers/seed-gig.producer'
+import { SellerUpdateConsumer } from './consumers/seller-update.consumer'
 
 @Module({
   imports: [
@@ -30,7 +31,15 @@ import { SeedGigProducer } from './producers/seed-gig.producer'
     ])
   ],
   controllers: [AppController, BuyerController, SellerController],
-  providers: [Logger, BuyerService, SellerService, BuyerUpdateConsumer, UpdateGigProducer, SeedGigProducer]
+  providers: [
+    Logger,
+    BuyerService,
+    SellerService,
+    BuyerUpdateConsumer,
+    UpdateGigProducer,
+    SeedGigProducer,
+    SellerUpdateConsumer
+  ]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
