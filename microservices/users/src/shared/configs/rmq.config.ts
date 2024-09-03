@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config'
 import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq'
 import { UsersEnvVariableKeys } from '../app.constants'
-import { BuyerReview, BuyerUpdate, SeedGig, SellerUpdate, UpdateGig } from '@oybek703/freelance-app-shared'
+import { BuyerReview, BuyerUpdate, GetSellers, SeedGig, SellerUpdate, UpdateGig } from '@oybek703/freelance-app-shared'
 
 export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
   const rabbitmqEndpoint = configService.get<string>(UsersEnvVariableKeys.rabbitmqEndpoint)
@@ -37,6 +37,12 @@ export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
         options: { durable: true, autoDelete: false },
         type: 'fanout',
         createExchangeIfNotExists: true
+      },
+      {
+        name: GetSellers.exchange,
+        options: { durable: true, autoDelete: false },
+        type: 'direct',
+        createExchangeIfNotExists: true
       }
     ],
     queues: [
@@ -68,6 +74,12 @@ export const getRmqConfig = (configService: ConfigService): RabbitMQConfig => {
         name: BuyerReview.queue,
         createQueueIfNotExists: true,
         exchange: BuyerReview.exchange
+      },
+      {
+        name: GetSellers.queue,
+        routingKey: GetSellers.routingKey,
+        createQueueIfNotExists: true,
+        exchange: GetSellers.exchange
       }
     ]
   }

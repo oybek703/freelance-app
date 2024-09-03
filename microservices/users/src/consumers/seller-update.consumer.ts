@@ -1,8 +1,9 @@
 import { Injectable, Logger, OnApplicationShutdown, ShutdownSignal } from '@nestjs/common'
 import { AmqpConnection, RabbitRPC } from '@golevelup/nestjs-rabbitmq'
-import { BuyerReview, SellerUpdate } from '@oybek703/freelance-app-shared'
+import { BuyerReview, GetSellers, SellerUpdate } from '@oybek703/freelance-app-shared'
 import { SellerService } from '../services/seller.service'
 import { UpdateGigProducer } from '../producers/update-gig.producer'
+import { SeedGigProducer } from '../producers/seed-gig.producer'
 
 @Injectable()
 export class SellerUpdateConsumer implements OnApplicationShutdown {
@@ -11,7 +12,8 @@ export class SellerUpdateConsumer implements OnApplicationShutdown {
   constructor(
     private readonly amqpConnection: AmqpConnection,
     private readonly sellerService: SellerService,
-    private readonly updateGigProducer: UpdateGigProducer
+    private readonly updateGigProducer: UpdateGigProducer,
+    private readonly seedGigProducer: SeedGigProducer
   ) {}
 
   async onApplicationShutdown(signal?: ShutdownSignal) {
@@ -64,5 +66,16 @@ export class SellerUpdateConsumer implements OnApplicationShutdown {
       await this.sellerService.updateSellerReview({ sellerId, rating })
       await this.updateGigProducer.publishUpdateGigReview({ gigId, reviewerId: sellerId, rating: +rating })
     }
+  }
+
+  @RabbitRPC({
+    exchange: GetSellers.exchange,
+    routingKey: GetSellers.routingKey,
+    queue: GetSellers.queue
+  })
+  private async handleSeedGigs(msg: GetSellers.Request) {
+    const { count } = msg
+    const { sellers } = await this.sellerService.getRandomSellers(count)
+    await this.seedGigProducer.publishSeedGigSellers({ count, sellers })
   }
 }
