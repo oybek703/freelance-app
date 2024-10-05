@@ -19,6 +19,11 @@
       "name": "users",
       "cwd": "microservices/users",
       "script": "npm run start:dev"
+    },
+    {
+      "name": "gigs",
+      "cwd": "microservices/gigs",
+      "script": "npm run start:dev"
     }
   ]
 }
