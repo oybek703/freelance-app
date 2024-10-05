@@ -12,12 +12,15 @@ type AxiosCreateType = ReturnType<typeof axios.create>
 export class AxiosService {
   public authInstance: AxiosCreateType
   public usersInstance: AxiosCreateType
+  public gigsInstance: AxiosCreateType
 
   constructor(private readonly configService: ConfigService) {
     const authBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.authBaseUrl)
     const usersBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.usersBaseUrl)
+    const gigBaseUrl = this.configService.get<string>(GatewayEnvVariableKeys.gigBaseUrl)
     this.authInstance = this.axiosCreateInstance(authBaseURL, MicroserviceNames.auth)
     this.usersInstance = this.axiosCreateInstance(usersBaseURL, MicroserviceNames.users)
+    this.gigsInstance = this.axiosCreateInstance(gigBaseUrl, MicroserviceNames.gigs)
   }
 
   setToken(instance: AxiosCreateType, req: Request) {

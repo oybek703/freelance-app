@@ -28,3 +28,7 @@ export enum TokenEnvKeys {
   jwtToken = 'JWT_TOKEN',
   gatewayJwtToken = 'GATEWAY_JWT_TOKEN'
 }
+
+export enum ElasticSearchIndexNames {
+  gigs = 'gigs'
+}

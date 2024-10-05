@@ -5,7 +5,8 @@ export {
   MicroserviceNames,
   GlobalHeaderKeys,
   NotificationsEmailTemplates,
-  TokenEnvKeys
+  TokenEnvKeys,
+  ElasticSearchIndexNames
 } from './helpers/global.constants'
 export type {
   AuthRequest,
@@ -15,6 +16,7 @@ export type {
   IGigPaginateProps,
   IJwtPayload
 } from './interfaces/auth.interface'
+export type { ISellerGig, RatingCategories, RatingCategory } from './interfaces/gig.interfaces'
 export { AuthEmail } from './contracts/auth-email.contract'
 export { BuyerUpdate } from './contracts/buyer-update.contract'
 export { BuyerReview } from './contracts/buyer-review.contract'
