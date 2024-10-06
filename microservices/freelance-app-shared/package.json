@@ -1,6 +1,6 @@
 {
   "name": "@oybek703/freelance-app-shared",
-  "version": "1.3.9",
+  "version": "1.4.3",
   "description": "Freelance App shared library",
   "types": "./src/index.d.ts",
   "files": [

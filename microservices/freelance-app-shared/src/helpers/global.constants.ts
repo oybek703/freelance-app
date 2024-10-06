@@ -32,3 +32,7 @@ export enum TokenEnvKeys {
 export enum ElasticSearchIndexNames {
   gigs = 'gigs'
 }
+
+export enum GigCacheCategoryKeys {
+  selectedCategories = 'selectedCategories'
+}

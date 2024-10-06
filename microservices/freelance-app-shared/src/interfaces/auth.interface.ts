@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import { MicroserviceNames } from '../helpers/global.constants'
+import { ISellerGig } from './gig.interfaces'
 
 export interface IJwtPayload {
   id: string
@@ -33,5 +34,5 @@ export interface IGigSearchOptions {
 
 export interface IGigSearchResult {
   total: number
-  hits: unknown[]
+  hits: ISellerGig[]
 }

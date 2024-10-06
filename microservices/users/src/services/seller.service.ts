@@ -27,7 +27,7 @@ export class SellerService {
   }
 
   async getRandomSellers(size: number) {
-    const sellers = await this.sellerModel.aggregate<SellerDocument[]>([{ $sample: { size } }])
+    const sellers = await this.sellerModel.aggregate<SellerDocument[]>([{ $sample: { size } }]).exec()
     return { message: 'Random sellers profiles', sellers }
   }
 

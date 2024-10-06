@@ -6,7 +6,8 @@ export {
   GlobalHeaderKeys,
   NotificationsEmailTemplates,
   TokenEnvKeys,
-  ElasticSearchIndexNames
+  ElasticSearchIndexNames,
+  GigCacheCategoryKeys
 } from './helpers/global.constants'
 export type {
   AuthRequest,
