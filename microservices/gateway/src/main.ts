@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe())
   app.useLogger(WinstonModule.createLogger({ instance: logger }))
   const port = configService.get<number>(GatewayEnvVariableKeys.port)
-  const clientUrl = configService.get<string>(GatewayEnvVariableKeys.clientUrl)
+  const clientUrl = configService.get<string>(GatewayEnvVariableKeys.clientURL)
   const secretKeyOne = configService.get<string>(GatewayEnvVariableKeys.secretKeyOne)
   const secretKeyTwo = configService.get<string>(GatewayEnvVariableKeys.secretKeyTwo)
   const nodeEnv = configService.get<string>(GatewayEnvVariableKeys.nodeEnv)

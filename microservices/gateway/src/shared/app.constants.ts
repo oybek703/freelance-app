@@ -6,15 +6,21 @@ export enum GatewayEnvVariableKeys {
   nodeEnv = 'NODE_ENV',
   secretKeyOne = 'SECRET_KEY_ONE',
   secretKeyTwo = 'SECRET_KEY_TWO',
-  clientUrl = 'CLIENT_URL',
-  authBaseUrl = 'AUTH_BASE_URL',
-  usersBaseUrl = 'USERS_BASE_URL',
-  gigBaseUrl = 'GIG_BASE_URL',
-  messageBaseUrl = 'MESSAGE_BASE_URL',
-  orderBaseUrl = 'ORDER_BASE_URL',
-  reviewBaseUrl = 'REVIEW_BASE_URL',
+  clientURL = 'CLIENT_URL',
+  authBaseURL = 'AUTH_BASE_URL',
+  usersBaseURL = 'USERS_BASE_URL',
+  gigBaseURL = 'GIG_BASE_URL',
+  messageBaseURL = 'MESSAGE_BASE_URL',
+  orderBaseURL = 'ORDER_BASE_URL',
+  reviewBaseURL = 'REVIEW_BASE_URL',
   redisHost = 'REDIS_HOST',
-  elasticsearchUrl = 'ELASTIC_SEARCH_URL',
-  elasticApmServerUrl = 'ELASTIC_APM_SERVER_URL',
+  elasticsearchURL = 'ELASTIC_SEARCH_URL',
+  elasticApmServerURL = 'ELASTIC_APM_SERVER_URL',
   elasticApmSecretToken = 'ELASTIC_APM_SECRET_TOKEN'
 }
+
+export enum SocketServiceEvents {
+  online = 'online'
+}
+
+export const loggedInUsersCacheKey = 'loggedInUsers'

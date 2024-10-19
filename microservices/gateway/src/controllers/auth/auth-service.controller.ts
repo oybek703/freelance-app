@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
+import { Controller, Delete, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
 import { AxiosService } from '../../services/axios.service'
 import { Request } from 'express'
 import { AuthGuard } from '../../guards/auth.guard'
@@ -120,5 +120,17 @@ export class AuthServiceController {
       return data
     }
     return this.appService.wrapTryCatch(func, AuthServiceController.prototype.refreshToken.name)
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('auth/logged-in-user')
+  async getLoggedInUsers() {
+    return this.appService.getLoggedInUsers()
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('auth/logged-in-user/:username')
+  async removeLoggedInUserFromCache(@Param('username') username: string) {
+    return this.appService.removeLoggedInUserFromCache(username)
   }
 }

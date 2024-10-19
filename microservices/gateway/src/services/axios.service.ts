@@ -15,9 +15,9 @@ export class AxiosService {
   public gigsInstance: AxiosCreateType
 
   constructor(private readonly configService: ConfigService) {
-    const authBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.authBaseUrl)
-    const usersBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.usersBaseUrl)
-    const gigBaseUrl = this.configService.get<string>(GatewayEnvVariableKeys.gigBaseUrl)
+    const authBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.authBaseURL)
+    const usersBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.usersBaseURL)
+    const gigBaseUrl = this.configService.get<string>(GatewayEnvVariableKeys.gigBaseURL)
     this.authInstance = this.axiosCreateInstance(authBaseURL, MicroserviceNames.auth)
     this.usersInstance = this.axiosCreateInstance(usersBaseURL, MicroserviceNames.users)
     this.gigsInstance = this.axiosCreateInstance(gigBaseUrl, MicroserviceNames.gigs)
