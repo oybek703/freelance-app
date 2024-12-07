@@ -7,10 +7,18 @@ import {
   Logger
 } from '@nestjs/common'
 import { AxiosError } from 'axios'
+import { CachingService } from '../caching/caching.service'
+import { SocketService } from './socket.service'
+import { SocketServiceEvents } from '../shared/app.constants'
 
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name)
+
+  constructor(
+    private readonly cachingService: CachingService,
+    private readonly socketService: SocketService
+  ) {}
 
   async wrapTryCatch(func: () => Promise<unknown>, method: string) {
     try {
@@ -25,5 +33,17 @@ export class AppService {
       }
       throw new InternalServerErrorException()
     }
+  }
+
+  async getLoggedInUsers() {
+    const loggedInUsers = await this.cachingService.getLoggedInUsersFromCache()
+    this.socketService.io.emit(SocketServiceEvents.online, loggedInUsers)
+    return { message: 'User is online.' }
+  }
+
+  async removeLoggedInUserFromCache(username: string) {
+    const loggedInUsers = await this.cachingService.removeLoggedInUserFromCache(username)
+    this.socketService.io.emit(SocketServiceEvents.online, loggedInUsers)
+    return { message: 'User is offline.' }
   }
 }
