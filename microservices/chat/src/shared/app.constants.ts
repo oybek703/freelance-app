@@ -16,3 +16,7 @@ export enum ChatEnvVariableKeys {
   cloudinaryApiSecret = 'CLOUDINARY_API_SECRET',
   redisHost = 'REDIS_HOST'
 }
+
+export enum ChatCommonErrors {
+  fileUploadError = 'File upload error. Try again later'
+}

@@ -10,7 +10,8 @@ export enum MicroserviceNames {
 export enum NotificationsEmailTemplates {
   verifyEmail = 'verify-email',
   forgotPassword = 'forgot-password',
-  resetPasswordSuccess = 'reset-password-success'
+  resetPasswordSuccess = 'reset-password-success',
+  offer = 'offer'
 }
 
 export enum BaseURLRoutes {
@@ -18,7 +19,8 @@ export enum BaseURLRoutes {
   authBaseURL = 'api/v1/auth',
   usersBuyerBaseURL = 'api/v1/buyer',
   usersSellerBaseURL = 'api/v1/seller',
-  gigsBaseURL = 'api/v1/gigs'
+  gigsBaseURL = 'api/v1/gigs',
+  chatBaseURL = 'api/v1/chat'
 }
 
 export enum GlobalHeaderKeys {
@@ -36,4 +38,8 @@ export enum ElasticSearchIndexNames {
 
 export enum GigCacheCategoryKeys {
   selectedCategories = 'selectedCategories'
+}
+
+export enum ChatServiceEventNames {
+  messageReceived = 'message-received'
 }

@@ -6,19 +6,23 @@ import { ConfigService } from '@nestjs/config'
 import { GatewayEnvVariableKeys, SocketServiceEvents } from '../shared/app.constants'
 import { createClient } from 'redis'
 import { createAdapter } from '@socket.io/redis-adapter'
+import { io, Socket as SocketClient } from 'socket.io-client'
 
 @Injectable()
 export class SocketService {
   private readonly logger = new Logger(SocketService.name)
   public io: Server
+  private ioClient: SocketClient
 
   constructor(
     private readonly cachingService: CachingService,
     private readonly httpAdapterHost: HttpAdapterHost,
     private readonly configService: ConfigService
-  ) {
-    const clientURL = configService.get<string>(GatewayEnvVariableKeys.clientURL)
+  ) {}
+
+  createIoServer() {
     const httpServer = this.httpAdapterHost.httpAdapter.getHttpServer()
+    const clientURL = this.configService.get<string>(GatewayEnvVariableKeys.clientURL)
     this.io = new Server(httpServer, {
       cors: { origin: clientURL, methods: ['PUT', 'POST', 'DELETE', 'GET', 'OPTIONS'] }
     })
@@ -33,6 +37,7 @@ export class SocketService {
   }
 
   async listen() {
+    this.chatServiceConnectIO()
     this.io.on('connection', async (socket: Socket) => {
       socket.on('getLoggedInUsers', async () => {
         const loggedInUsers = await this.cachingService.getLoggedInUsersFromCache()
@@ -52,6 +57,20 @@ export class SocketService {
       socket.on('category', async (category: string, username: string) => {
         await this.cachingService.saveUserSelectedCategory(category, username)
       })
+    })
+  }
+
+  chatServiceConnectIO() {
+    const chatBaseURL = this.configService.get(GatewayEnvVariableKeys.chatBaseURL)
+    this.ioClient = io(chatBaseURL, { transports: ['websocket', 'polling'], secure: true })
+    this.ioClient.on('connect', () => this.logger.verbose('Chat service io connection created successfully.'))
+    this.ioClient.on('disconnect', reason => {
+      this.logger.error(`Chat service io disconnected, reason: ${reason}`)
+      this.ioClient.connect()
+    })
+    this.ioClient.on('connect_error', err => {
+      this.logger.error(`Chat service io connection error: ${err}`)
+      this.ioClient.connect()
     })
   }
 }

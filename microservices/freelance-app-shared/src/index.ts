@@ -7,7 +7,8 @@ export {
   NotificationsEmailTemplates,
   TokenEnvKeys,
   ElasticSearchIndexNames,
-  GigCacheCategoryKeys
+  GigCacheCategoryKeys,
+  ChatServiceEventNames
 } from './helpers/global.constants'
 export type {
   AuthRequest,

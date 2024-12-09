@@ -10,7 +10,7 @@ export enum GatewayEnvVariableKeys {
   authBaseURL = 'AUTH_BASE_URL',
   usersBaseURL = 'USERS_BASE_URL',
   gigBaseURL = 'GIG_BASE_URL',
-  messageBaseURL = 'MESSAGE_BASE_URL',
+  chatBaseURL = 'CHAT_BASE_URL',
   orderBaseURL = 'ORDER_BASE_URL',
   reviewBaseURL = 'REVIEW_BASE_URL',
   redisHost = 'REDIS_HOST',
