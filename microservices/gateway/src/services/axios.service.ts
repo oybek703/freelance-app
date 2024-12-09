@@ -13,6 +13,7 @@ export class AxiosService {
   public authInstance: AxiosCreateType
   public usersInstance: AxiosCreateType
   public gigsInstance: AxiosCreateType
+  public chatInstance: AxiosCreateType
 
   constructor(private readonly configService: ConfigService) {
     const authBaseURL = this.configService.get<string>(GatewayEnvVariableKeys.authBaseURL)
@@ -21,6 +22,7 @@ export class AxiosService {
     this.authInstance = this.axiosCreateInstance(authBaseURL, MicroserviceNames.auth)
     this.usersInstance = this.axiosCreateInstance(usersBaseURL, MicroserviceNames.users)
     this.gigsInstance = this.axiosCreateInstance(gigBaseUrl, MicroserviceNames.gigs)
+    this.chatInstance = this.axiosCreateInstance(gigBaseUrl, MicroserviceNames.chat)
   }
 
   setToken(instance: AxiosCreateType, req: Request) {

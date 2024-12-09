@@ -11,6 +11,7 @@ import { UsersSellerController } from './controllers/users/users-seller.controll
 import { AppService } from './services/app.service'
 import { CachingModule } from './caching/caching.module'
 import { SocketService } from './services/socket.service'
+import { ChatServiceController } from './controllers/chat/chat-service.controller'
 
 @Module({
   imports: [
@@ -18,13 +19,20 @@ import { SocketService } from './services/socket.service'
     ElasticsearchModule.registerAsync({ inject: [ConfigService], useFactory: getElasticsearchConfig }),
     CachingModule
   ],
-  controllers: [AppController, AuthServiceController, UsersBuyerController, UsersSellerController],
+  controllers: [
+    AppController,
+    AuthServiceController,
+    UsersBuyerController,
+    UsersSellerController,
+    ChatServiceController
+  ],
   providers: [AuthGuard, Logger, AxiosService, AppService, SocketService]
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly socketService: SocketService) {}
 
   async onModuleInit() {
+    this.socketService.createIoServer()
     await this.socketService.createClientAndServers()
     await this.socketService.listen()
   }
