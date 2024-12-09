@@ -27,7 +27,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/elasticsearch": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
-    "@oybek703/freelance-app-shared": "^1.2.2",
+    "@oybek703/freelance-app-shared": "^1.4.7",
     "nest-winston": "^1.9.7",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
