@@ -3,7 +3,8 @@ export enum MicroserviceNames {
   gateway = 'GatewayService',
   auth = 'AuthService',
   users = 'UsersService',
-  gigs = 'GigsService'
+  gigs = 'GigsService',
+  chat = 'ChatService'
 }
 
 export enum NotificationsEmailTemplates {

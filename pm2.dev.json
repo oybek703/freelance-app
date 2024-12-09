@@ -24,6 +24,11 @@
       "name": "gigs",
       "cwd": "microservices/gigs",
       "script": "npm run start:dev"
+    },
+    {
+      "name": "chats",
+      "cwd": "microservices/chat",
+      "script": "npm run start:dev"
     }
   ]
 }
