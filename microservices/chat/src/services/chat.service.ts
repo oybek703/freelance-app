@@ -94,37 +94,39 @@ export class ChatService {
   }
 
   async getConversationList(username: string) {
-    const messages: MessageDocument[] = await this.messageModel.aggregate([
-      {
-        $match: {
-          $or: [{ senderUsername: username }, { receiverUsername: username }]
+    const messages: MessageDocument[] = await this.messageModel
+      .aggregate([
+        {
+          $match: {
+            $or: [{ senderUsername: username }, { receiverUsername: username }]
+          }
+        },
+        {
+          $group: {
+            _id: '$conversationId',
+            result: { $top: { output: '$$ROOT', sortBy: { createdAt: -1 } } }
+          }
+        },
+        {
+          $project: {
+            _id: '$result._id',
+            conversationId: '$result.conversationId',
+            sellerId: '$result.sellerId',
+            buyerId: '$result.buyerId',
+            receiverUsername: '$result.receiverUsername',
+            receiverPicture: '$result.receiverPicture',
+            senderUsername: '$result.senderUsername',
+            senderPicture: '$result.senderPicture',
+            body: '$result.body',
+            file: '$result.file',
+            gigId: '$result.gigId',
+            isRead: '$result.isRead',
+            hasOffer: '$result.hasOffer',
+            createdAt: '$result.createdAt'
+          }
         }
-      },
-      {
-        $group: {
-          _id: '$conversationId',
-          result: { $top: { output: '$$ROOT', sortBy: { createdAt: -1 } } }
-        }
-      },
-      {
-        $project: {
-          _id: '$result._id',
-          conversationId: '$result.conversationId',
-          sellerId: '$result.sellerId',
-          buyerId: '$result.buyerId',
-          receiverUsername: '$result.receiverUsername',
-          receiverPicture: '$result.receiverPicture',
-          senderUsername: '$result.senderUsername',
-          senderPicture: '$result.senderPicture',
-          body: '$result.body',
-          file: '$result.file',
-          gigId: '$result.gigId',
-          isRead: '$result.isRead',
-          hasOffer: '$result.hasOffer',
-          createdAt: '$result.createdAt'
-        }
-      }
-    ])
+      ])
+      .exec()
     return messages
   }
 
@@ -145,66 +147,73 @@ export class ChatService {
   }
 
   async getUserMessages(sender: string, receiver: string) {
-    const messages: MessageDocument[] = await this.messageModel.aggregate([
-      {
-        $match: {
-          $or: [
-            { senderUsername: sender, receiverUsername: receiver },
-            { senderUsername: receiver, receiverUsername: sender }
-          ]
-        }
-      },
-      { $sort: { createdAt: 1 } }
-    ])
+    const messages: MessageDocument[] = await this.messageModel
+      .aggregate([
+        {
+          $match: {
+            $or: [
+              { senderUsername: sender, receiverUsername: receiver },
+              { senderUsername: receiver, receiverUsername: sender }
+            ]
+          }
+        },
+        { $sort: { createdAt: 1 } }
+      ])
+      .exec()
     return messages
   }
 
   async getConversationMessages(messageConversationId: string) {
-    const messages: MessageDocument[] = await this.messageModel.aggregate([
-      { $match: { conversationId: messageConversationId } },
-      { $sort: { createdAt: 1 } }
-    ])
+    const messages: MessageDocument[] = await this.messageModel
+      .aggregate([{ $match: { conversationId: messageConversationId } }, { $sort: { createdAt: 1 } }])
+      .exec()
     return messages
   }
 
   async updateOffer(dto: UpdateOffer) {
     const { messageId, type } = dto
-    const message: MessageDocument = await this.messageModel.findOneAndUpdate(
-      { _id: messageId },
-      {
-        $set: {
-          [`offer.${type}`]: true
-        }
-      },
-      { new: true }
-    )
+    const message: MessageDocument = await this.messageModel
+      .findOneAndUpdate(
+        { _id: messageId },
+        {
+          $set: {
+            [`offer.${type}`]: true
+          }
+        },
+        { new: true }
+      )
+      .exec()
     return message
   }
 
   async markSingleMessageAsRead(messageId: string) {
-    const message: MessageDocument = await this.messageModel.findOneAndUpdate(
-      { _id: messageId },
-      {
-        $set: {
-          isRead: true
-        }
-      },
-      { new: true }
-    )
+    const message: MessageDocument = await this.messageModel
+      .findOneAndUpdate(
+        { _id: messageId },
+        {
+          $set: {
+            isRead: true
+          }
+        },
+        { new: true }
+      )
+      .exec()
     this.socketService.io.emit(ChatServiceEventNames.messageReceived, message)
     return message
   }
 
   async markMultipleMessagesAsRead(dto: MarkAsReadMultipleDto) {
     const { messageId, sender, receiver } = dto
-    await this.messageModel.updateMany(
-      { senderUsername: sender, receiverUsername: receiver, isRead: false },
-      {
-        $set: {
-          isRead: true
+    await this.messageModel
+      .updateMany(
+        { senderUsername: sender, receiverUsername: receiver, isRead: false },
+        {
+          $set: {
+            isRead: true
+          }
         }
-      }
-    )
+      )
+      .exec()
     const message: MessageDocument = await this.messageModel.findOne({ _id: messageId }).exec()
     this.socketService.io.emit(ChatServiceEventNames.messageReceived, message)
     return message

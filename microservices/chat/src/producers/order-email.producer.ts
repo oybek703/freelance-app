@@ -17,6 +17,6 @@ export class OrderEmailProducer implements OnApplicationShutdown {
 
   public async publishOrderEmail(msg: OrderEmail.Request) {
     await this.amqpConnection.publish(OrderEmail.exchange, OrderEmail.routingKey, msg)
-    this.logger.log(`[${msg.template}] Email sent successfully.`)
+    this.logger.log(`[${msg.template}] Order email sent successfully.`)
   }
 }
