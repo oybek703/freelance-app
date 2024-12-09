@@ -41,5 +41,6 @@ export enum GigCacheCategoryKeys {
 }
 
 export enum ChatServiceEventNames {
-  messageReceived = 'message-received'
+  messageReceived = 'message-received',
+  messageUpdated = 'message-updated'
 }

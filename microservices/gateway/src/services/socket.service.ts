@@ -7,6 +7,7 @@ import { GatewayEnvVariableKeys, SocketServiceEvents } from '../shared/app.const
 import { createClient } from 'redis'
 import { createAdapter } from '@socket.io/redis-adapter'
 import { io, Socket as SocketClient } from 'socket.io-client'
+import { ChatServiceEventNames } from '@oybek703/freelance-app-shared'
 
 @Injectable()
 export class SocketService {
@@ -72,5 +73,11 @@ export class SocketService {
       this.logger.error(`Chat service io connection error: ${err}`)
       this.ioClient.connect()
     })
+    this.ioClient.on(ChatServiceEventNames.messageReceived, (data: unknown) =>
+      this.ioClient.emit(ChatServiceEventNames.messageReceived, data)
+    )
+    this.ioClient.on(ChatServiceEventNames.messageUpdated, (data: unknown) =>
+      this.ioClient.emit(ChatServiceEventNames.messageUpdated, data)
+    )
   }
 }
